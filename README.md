@@ -1,22 +1,37 @@
 <div align="center">
 
-<img width="689" height="332" alt="image" src="https://github.com/user-attachments/assets/19728cf0-0240-4e4e-8442-f589f687c23d" />
-<img width="764" height="367" alt="image" src="https://github.com/user-attachments/assets/05f28982-3ebe-47cd-8716-ca515b1e1ab3" />
+<img width="700" src="https://github.com/user-attachments/assets/19728cf0-0240-4e4e-8442-f589f687c23d" />
 
-### AI-Powered Development Terminal
+<br/>
 
-*Transform your development workflow with intelligent AI assistance*
+<img width="780" src="https://github.com/user-attachments/assets/05f28982-3ebe-47cd-8716-ca515b1e1ab3" />
+
+<br/><br/>
+
+# ⚡ VibeCode — AI Development Terminal
+
+### Transform your development workflow with intelligent AI assistance
+
+<br/>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D18.0.0-green)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ArthurDS-tech/Vibecoder-Claude/pulls)
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Commands](#-commands) • [Configuration](#-configuration)
+<br/>
+
+ **Code faster. Debug smarter. Build better.**
+
+<br/>
+
+[Features](#-features) •
+[Installation](#-installation) •
+[Quick Start](#-quick-start) •
+[Commands](#-commands) •
+[Configuration](#-configuration)
 
 </div>
-
----
 
 ## ✨ Features
 
