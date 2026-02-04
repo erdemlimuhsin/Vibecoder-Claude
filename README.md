@@ -8,7 +8,7 @@
 
 ### Transform your development workflow with intelligent AI assistance
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![TypeScript](https://ibb.co/qLn6QJkV)
 
 <br/>
 
