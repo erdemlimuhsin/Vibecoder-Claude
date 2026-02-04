@@ -36,7 +36,7 @@ import { AIClient } from './core/ai-client';
 import { ContextBuilder } from './core/context';
 import { ProjectMemory as ProjectMemoryImpl } from '../ai/memory/ProjectMemory';
 import ora from 'ora';
-import { SimpleProgress } from './utils/progress';
+import { AnimatedProgress, SimpleProgress } from './utils/progress';
 import { ResponseFormatter } from './utils/response-formatter';
 import { TokenOptimizer } from './utils/token-optimizer';
 import { FileNavigator } from './utils/file-navigator';
@@ -112,7 +112,7 @@ export class VibeCodeTerminal {
       // Navegação básica
       'cd', 'ls', 'tree',
       // Sistema
-      'switch', 'config', 'help', 'clear', 'exit'
+      'switch', 'config', 'update', 'help', 'clear', 'exit'
     ];
 
     this.autocompleteManager = new AutocompleteManager({
@@ -213,26 +213,39 @@ export class VibeCodeTerminal {
   private showWelcome(): void {
     console.clear();
     
-    // Logo ASCII minimalista
+    // Logo ASCII art moderno com gradiente
     console.log('');
-    console.log(chalk.bold.blue('  ╭─────────────────────────────────╮'));
-    console.log(chalk.bold.blue('  │') + chalk.bold.white('         VibeCode  AI          ') + chalk.bold.blue('│'));
-    console.log(chalk.bold.blue('  ╰─────────────────────────────────╯'));
+    console.log(chalk.bold.cyan('     ██╗   ██╗██╗██████╗ ███████╗'));
+    console.log(chalk.bold.cyan('     ██║   ██║██║██╔══██╗██╔════╝'));
+    console.log(chalk.bold.blue('     ██║   ██║██║██████╔╝█████╗  '));
+    console.log(chalk.bold.blue('     ╚██╗ ██╔╝██║██╔══██╗██╔══╝  '));
+    console.log(chalk.bold.magenta('      ╚████╔╝ ██║██████╔╝███████╗'));
+    console.log(chalk.bold.magenta('       ╚═══╝  ╚═╝╚═════╝ ╚══════╝'));
+    console.log('');
+    console.log(chalk.bold.cyan('      ██████╗ ██████╗ ██████╗ ███████╗'));
+    console.log(chalk.bold.blue('     ██╔════╝██╔═══██╗██╔══██╗██╔════╝'));
+    console.log(chalk.bold.blue('     ██║     ██║   ██║██║  ██║█████╗  '));
+    console.log(chalk.bold.magenta('     ██║     ██║   ██║██║  ██║██╔══╝  '));
+    console.log(chalk.bold.magenta('     ╚██████╗╚██████╔╝██████╔╝███████╗'));
+    console.log(chalk.bold.magenta('      ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝'));
     console.log('');
     
     const version = '1.0.0';
     const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     
-    console.log(chalk.gray('  AI-powered development terminal'));
-    console.log(chalk.gray(`  v${version} • ${date}`));
+    // Tagline com efeito
+    console.log(chalk.bold.white('           ⚡ AI-POWERED DEVELOPMENT TERMINAL ⚡'));
+    console.log(chalk.gray(`                    v${version} • ${date}`));
+    console.log('');
+    console.log(chalk.gray('     ═══════════════════════════════════════════════'));
     console.log('');
     
-    // Quick start
-    console.log(chalk.bold.white('  Quick Start'));
+    // Quick start com ícones
+    console.log(chalk.bold.white('     🚀 QUICK START'));
     console.log('');
-    console.log(chalk.gray('  →') + chalk.white(' vibe ') + chalk.gray('"your task here"'));
-    console.log(chalk.gray('  →') + chalk.white(' help ') + chalk.gray('for all commands'));
-    console.log(chalk.gray('  →') + chalk.white(' switch ') + chalk.gray('to change AI provider'));
+    console.log(chalk.cyan('      ▸') + chalk.white(' vibe ') + chalk.gray('"your task here"') + chalk.dim('  - Execute AI tasks'));
+    console.log(chalk.cyan('      ▸') + chalk.white(' help ') + chalk.dim('                     - Show all commands'));
+    console.log(chalk.cyan('      ▸') + chalk.white(' switch ') + chalk.dim('                   - Change AI provider'));
     console.log('');
   }
 
@@ -322,6 +335,10 @@ export class VibeCodeTerminal {
 
         case 'config':
           await this.manageConfig(args);
+          break;
+
+        case 'update':
+          await this.smartUpdate();
           break;
 
         default:
@@ -426,12 +443,10 @@ export class VibeCodeTerminal {
     }
 
     // Progresso com steps
-    const progress = new SimpleProgress([
-      'Analisando pergunta',
-      'Construindo contexto',
-      'Consultando IA',
-      'Processando resposta'
-    ]);
+    const progress = new AnimatedProgress(['A', 'B', 'C'], {
+     spinnerStyle: 'dots',
+     color: 'cyan'
+    });
     
     try {
       progress.next();
@@ -596,12 +611,15 @@ Quando sugerir código, seja específico sobre qual arquivo criar/modificar.`;
       return;
     }
 
-    const progress = new SimpleProgress([
+    const progress = new AnimatedProgress([
       'Analisando requisitos',
       'Construindo contexto do projeto',
       'Gerando plano técnico',
       'Estruturando resposta'
-    ]);
+], {
+  spinnerStyle: 'dots',  // 'dots' | 'line' | 'arc' | 'arrow' | 'box' | 'braille'
+  color: 'cyan'          // 'cyan' | 'green' | 'yellow' | 'magenta' | 'blue'
+});
     
     try {
       progress.next();
@@ -2203,6 +2221,7 @@ if (!command) {
     console.log(chalk.bold.hex('#FFD700')('⚙️  SISTEMA'));
     console.log(chalk.hex('#00D9FF')('  switch') + chalk.white('                ') + chalk.gray('Trocar API (OpenAI ↔ Claude)'));
     console.log(chalk.hex('#00D9FF')('  config') + chalk.white('                ') + chalk.gray('Ver configuração e uso de tokens'));
+    console.log(chalk.hex('#00D9FF')('  update') + chalk.white('                ') + chalk.gray('Atualizar VibeCode (pull do GitHub)'));
     console.log(chalk.hex('#00D9FF')('  clear') + chalk.white('                 ') + chalk.gray('Limpar tela'));
     console.log(chalk.hex('#00D9FF')('  exit') + chalk.white('                  ') + chalk.gray('Sair'));
     console.log('');
@@ -2229,6 +2248,268 @@ if (!command) {
     
     // Recarregar configuração
     await this.configManager.reload();
+  }
+
+  /**
+   * Atualização inteligente e segura do VibeCode
+   * Puxa atualizações do GitHub com backup automático
+   */
+  private async smartUpdate(): Promise<void> {
+    console.log('');
+    console.log(chalk.hex('#00D9FF')('╔' + '═'.repeat(70) + '╗'));
+    console.log(chalk.hex('#00D9FF')('║') + chalk.bold.hex('#FFD700')(' 🔄 ATUALIZAÇÃO INTELIGENTE DO VIBECODE'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+    console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+    console.log(chalk.hex('#00D9FF')('║') + chalk.gray(' Verificando atualizações disponíveis...'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+    console.log(chalk.hex('#00D9FF')('╚' + '═'.repeat(70) + '╝'));
+    console.log('');
+
+    const spinner = ora({
+      text: 'Analisando repositório...',
+      color: 'cyan',
+      spinner: 'dots12'
+    }).start();
+
+    try {
+      // 1. Detectar se estamos em um repositório git
+      spinner.text = 'Verificando repositório Git...';
+      
+      const { stdout: isGitRepo } = await execAsync('git rev-parse --is-inside-work-tree', { 
+        cwd: this.state.currentDir 
+      }).catch(() => ({ stdout: '' }));
+
+      if (!isGitRepo.trim()) {
+        spinner.stop();
+        console.log(chalk.yellow('⚠️  Não é um repositório Git'));
+        console.log('');
+        console.log(chalk.gray('Este comando funciona apenas em instalações via Git.'));
+        console.log('');
+        console.log(chalk.white('Para atualizar via npm:'));
+        console.log(chalk.hex('#00D9FF')('  npm update -g vibecode'));
+        console.log('');
+        return;
+      }
+
+      // 2. Verificar se há mudanças locais não commitadas
+      spinner.text = 'Verificando mudanças locais...';
+      
+      const { stdout: gitStatus } = await execAsync('git status --porcelain', { 
+        cwd: this.state.currentDir 
+      });
+
+      const hasLocalChanges = gitStatus.trim().length > 0;
+
+      // 3. Verificar branch atual
+      spinner.text = 'Verificando branch...';
+      
+      const { stdout: currentBranch } = await execAsync('git branch --show-current', { 
+        cwd: this.state.currentDir 
+      });
+
+      const branch = currentBranch.trim() || 'main';
+
+      // 4. Buscar atualizações do remote
+      spinner.text = 'Buscando atualizações do GitHub...';
+      
+      await execAsync('git fetch origin', { cwd: this.state.currentDir });
+
+      // 5. Verificar se há commits novos
+      const { stdout: behindCount } = await execAsync(
+        `git rev-list HEAD..origin/${branch} --count`, 
+        { cwd: this.state.currentDir }
+      );
+
+      const commitsAhead = parseInt(behindCount.trim()) || 0;
+
+      spinner.stop();
+
+      if (commitsAhead === 0) {
+        console.log(chalk.green('✓ Você já está na versão mais recente!'));
+        console.log('');
+        console.log(chalk.gray('Nenhuma atualização disponível.'));
+        console.log('');
+        return;
+      }
+
+      // 6. Mostrar informações sobre atualizações
+      console.log(chalk.hex('#FFD700')(`📦 ${commitsAhead} nova(s) atualização(ões) disponível(is)!`));
+      console.log('');
+
+      // Mostrar últimos commits
+      const { stdout: commits } = await execAsync(
+        `git log HEAD..origin/${branch} --oneline --max-count=5`,
+        { cwd: this.state.currentDir }
+      );
+
+      if (commits.trim()) {
+        console.log(chalk.bold.white('Últimas mudanças:'));
+        commits.trim().split('\n').forEach(commit => {
+          const [hash, ...messageParts] = commit.split(' ');
+          const message = messageParts.join(' ');
+          console.log(chalk.gray('  •') + chalk.hex('#00D9FF')(` ${hash}`) + chalk.white(` ${message}`));
+        });
+        console.log('');
+      }
+
+      // 7. Avisar sobre mudanças locais
+      if (hasLocalChanges) {
+        console.log(chalk.yellow('⚠️  ATENÇÃO: Você tem mudanças locais não commitadas'));
+        console.log('');
+        console.log(chalk.gray('Mudanças detectadas:'));
+        const statusLines = gitStatus.trim().split('\n').slice(0, 5);
+        statusLines.forEach(line => {
+          console.log(chalk.gray('  ' + line));
+        });
+        if (gitStatus.trim().split('\n').length > 5) {
+          console.log(chalk.gray(`  ... e mais ${gitStatus.trim().split('\n').length - 5} arquivo(s)`));
+        }
+        console.log('');
+        console.log(chalk.white('Opções:'));
+        console.log(chalk.hex('#00D9FF')('  1. Fazer stash (salvar temporariamente)'));
+        console.log(chalk.hex('#00D9FF')('  2. Fazer commit das mudanças'));
+        console.log(chalk.hex('#00D9FF')('  3. Cancelar atualização'));
+        console.log('');
+      }
+
+      // 8. Pedir confirmação
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+
+      const answer = await new Promise<string>((resolve) => {
+        rl.question(chalk.yellow('Deseja continuar com a atualização? (s/n): '), (ans) => {
+          rl.close();
+          resolve(ans.toLowerCase());
+        });
+      });
+
+      if (answer !== 's' && answer !== 'y') {
+        console.log('');
+        console.log(chalk.gray('✓ Atualização cancelada'));
+        console.log('');
+        return;
+      }
+
+      console.log('');
+      const updateSpinner = ora('Atualizando...').start();
+
+      // 9. Fazer backup da configuração
+      updateSpinner.text = 'Criando backup da configuração...';
+      
+      const configPath = path.join(this.state.currentDir, '.vibecoderc.json');
+      let configBackup = null;
+      if (fs.existsSync(configPath)) {
+        configBackup = fs.readFileSync(configPath, 'utf-8');
+      }
+
+      // 10. Fazer stash se houver mudanças locais
+      if (hasLocalChanges) {
+        updateSpinner.text = 'Salvando mudanças locais (stash)...';
+        await execAsync('git stash push -m "Auto-stash before update"', { 
+          cwd: this.state.currentDir 
+        });
+      }
+
+      // 11. Fazer pull
+      updateSpinner.text = 'Baixando atualizações...';
+      
+      await execAsync(`git pull origin ${branch}`, { 
+        cwd: this.state.currentDir 
+      });
+
+      // 12. Restaurar stash se necessário
+      if (hasLocalChanges) {
+        updateSpinner.text = 'Restaurando mudanças locais...';
+        
+        try {
+          await execAsync('git stash pop', { cwd: this.state.currentDir });
+        } catch (error) {
+          updateSpinner.warn('Conflito ao restaurar mudanças locais');
+          console.log('');
+          console.log(chalk.yellow('⚠️  Suas mudanças estão salvas no stash'));
+          console.log(chalk.gray('Execute: ') + chalk.white('git stash list') + chalk.gray(' para ver'));
+          console.log(chalk.gray('Execute: ') + chalk.white('git stash pop') + chalk.gray(' para restaurar'));
+          console.log('');
+        }
+      }
+
+      // 13. Reinstalar dependências se package.json mudou
+      updateSpinner.text = 'Verificando dependências...';
+      
+      const { stdout: packageChanged } = await execAsync(
+        'git diff HEAD@{1} HEAD --name-only',
+        { cwd: this.state.currentDir }
+      ).catch(() => ({ stdout: '' }));
+
+      if (packageChanged.includes('package.json')) {
+        updateSpinner.text = 'Instalando dependências...';
+        await execAsync('npm install', { cwd: this.state.currentDir });
+      }
+
+      // 14. Recompilar
+      updateSpinner.text = 'Recompilando TypeScript...';
+      
+      await execAsync('npm run build', { cwd: this.state.currentDir });
+
+      // 15. Atualizar link global
+      updateSpinner.text = 'Atualizando link global...';
+      
+      await execAsync('npm link', { cwd: this.state.currentDir });
+
+      // 16. Restaurar configuração se necessário
+      if (configBackup && fs.existsSync(configPath)) {
+        const currentConfig = fs.readFileSync(configPath, 'utf-8');
+        if (currentConfig !== configBackup) {
+          const backup = JSON.parse(configBackup);
+          const current = JSON.parse(currentConfig);
+          const merged = { ...current, ...backup };
+          fs.writeFileSync(configPath, JSON.stringify(merged, null, 2));
+        }
+      }
+
+      updateSpinner.stop();
+
+      // 17. Mostrar resultado
+      console.log('');
+      console.log(chalk.hex('#00D9FF')('╔' + '═'.repeat(70) + '╗'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.bold.green(' ✓ ATUALIZAÇÃO CONCLUÍDA COM SUCESSO!'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.white(' VibeCode foi atualizado para a versão mais recente.'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.gray(' Suas configurações foram preservadas.'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.bold.hex('#FFD700')(' 📋 PRÓXIMOS PASSOS'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.white(' 1. Reinicie o terminal (digite: exit)'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.white(' 2. Execute: vibecode'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.white(' 3. Verifique as novidades com: help'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╚' + '═'.repeat(70) + '╝'));
+      console.log('');
+
+    } catch (error) {
+      spinner.stop();
+      
+      console.log('');
+      console.log(chalk.hex('#00D9FF')('╔' + '═'.repeat(70) + '╗'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.bold.red(' ✗ ERRO NA ATUALIZAÇÃO'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+      
+      const errorMsg = (error as Error).message;
+      const lines = errorMsg.match(/.{1,68}/g) || [errorMsg];
+      lines.slice(0, 3).forEach(line => {
+        console.log(chalk.hex('#00D9FF')('║') + chalk.red(` ${line}`.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      });
+      
+      console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.bold.hex('#FFD700')(' 💡 SOLUÇÃO'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╠' + '═'.repeat(70) + '╣'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.white(' Tente atualizar manualmente:'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.hex('#FFD700')(' git pull origin main'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.hex('#FFD700')(' npm install'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.hex('#FFD700')(' npm run build'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('║') + chalk.hex('#FFD700')(' npm link'.padEnd(70)) + chalk.hex('#00D9FF')('║'));
+      console.log(chalk.hex('#00D9FF')('╚' + '═'.repeat(70) + '╝'));
+      console.log('');
+    }
   }
 
   /**

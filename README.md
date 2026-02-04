@@ -170,6 +170,7 @@ Simply run `vibecode` to enter interactive terminal mode with full AI assistance
 | `help` | Show all commands | `help` |
 | `config` | Manage configuration | `config list` |
 | `switch` | Change AI provider | `switch` |
+| `update` | Update VibeCode from GitHub | `update` |
 | `ls` | List files | `ls` |
 | `cd <dir>` | Change directory | `cd src` |
 | `tree` | Show file tree | `tree` |
@@ -276,6 +277,38 @@ vibe "refactor this code to use async/await instead of callbacks"
 - Keys are masked in terminal output (shows only last 4 characters)
 - Secure configuration file storage
 - See [SECURITY.md](./SECURITY.md) for details
+
+---
+
+## 🔄 Updating VibeCode
+
+### Automatic Update (Recommended)
+
+Inside the VibeCode terminal, simply run:
+
+```bash
+update
+```
+
+The `update` command will:
+- ✅ Check for new updates from GitHub
+- ✅ Show you what's changed
+- ✅ Backup your configuration automatically
+- ✅ Handle local changes safely (stash/restore)
+- ✅ Reinstall dependencies if needed
+- ✅ Rebuild and relink automatically
+
+**See [UPDATE-GUIDE.md](./UPDATE-GUIDE.md) for detailed instructions.**
+
+### Manual Update
+
+```bash
+cd /path/to/Vibecoder-Claude
+git pull origin main
+npm install
+npm run build
+npm link
+```
 
 ---
 
