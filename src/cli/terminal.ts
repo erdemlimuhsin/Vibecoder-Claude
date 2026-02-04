@@ -1,5 +1,30 @@
 #!/usr/bin/env node
 
+// Check for version flag
+if (process.argv.includes('--version') || process.argv.includes('-v')) {
+  const packageJson = require('../../package.json');
+  console.log(`vibecode v${packageJson.version}`);
+  process.exit(0);
+}
+
+// Check for help flag
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  console.log(`
+VibeCode - AI-Powered Development Terminal
+
+Usage:
+  vibecode              Start interactive terminal
+  vibecode --version    Show version
+  vibecode --help       Show this help
+
+Commands (inside terminal):
+  vibe <task>          Execute AI task
+  help                 Show all commands
+  exit                 Exit terminal
+`);
+  process.exit(0);
+}
+
 import readline from 'readline';
 import chalk from 'chalk';
 import { exec } from 'child_process';
