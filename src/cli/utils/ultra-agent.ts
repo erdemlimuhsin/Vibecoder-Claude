@@ -5,6 +5,34 @@ import { AIClient } from '../core/ai-client';
 import { ConfigManager } from '../core/config';
 import { SimpleProgress } from './progress';
 
+interface ProjectContext {
+  root: string;
+  files: string[];
+  structure: Record<string, unknown>;
+  tech: string[];
+}
+
+interface IntentResult {
+  targetFolder: string | null;
+  targetFile: string | null;
+  actions: {
+    develop: boolean;
+    debug: boolean;
+    optimize: boolean;
+    refactor: boolean;
+    test: boolean;
+    document: boolean;
+    analyze: boolean;
+  };
+  fullCommand: string;
+}
+
+interface CodeBlock {
+  code: string;
+  language: string;
+  path?: string;
+}
+
 /**
  * Ultra Agent - IA Super Inteligente
  * Um único comando que faz TUDO
@@ -13,7 +41,12 @@ export class UltraAgent {
   private aiClient: AIClient;
   private configManager: ConfigManager;
   private currentDir: string;
-  private projectContext: any = {};
+  private projectContext: ProjectContext = {
+    root: '',
+    files: [],
+    structure: {},
+    tech: []
+  };
 
   constructor(
     aiClient: AIClient,
@@ -63,7 +96,7 @@ export class UltraAgent {
    * Entende o comando do usuário
    * Extrai: pasta alvo, ação, contexto
    */
-  private async understandCommand(command: string): Promise<any> {
+  private async understandCommand(command: string): Promise<IntentResult> {
     // Extrair pasta mencionada
     const folderMatch = command.match(/(?:pasta|folder|dir|diretório|diretorio)\s+([^\s]+)/i);
     const targetFolder = folderMatch ? folderMatch[1] : null;
@@ -162,10 +195,7 @@ export class UltraAgent {
    * Execução inteligente
    * IA decide o que fazer e executa
    */
-  private async smartExecute(intent: any, originalCommand: string): Promise<void> {
-    // Construir contexto ultra-compacto
-    const contextStr = this.buildCompactContext(intent);
-    
+  private async smartExecute(intent: IntentResult, originalCommand: string): Promise<void> {
     // Ler conteúdo do arquivo alvo se especificado
     let targetFileContent = '';
     if (intent.targetFile) {
@@ -299,8 +329,27 @@ Caminho: [caminho/do/arquivo.ext]
   /**
    * Executa ações automaticamente (criar/modificar arquivos)
    */
-  private async executeActions(response: string, intent: any): Promise<void> {
+  private async executeActions(response: string, intent: IntentResult): Promise<void> {
     try {
+      // Pedir confirmação antes de executar
+      const readline = require('readline');
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+
+      const confirm = await new Promise<boolean>((resolve) => {
+        rl.question(chalk.yellow('\n⚠️  Executar ações automaticamente? (s/n): '), (answer: string) => {
+          rl.close();
+          resolve(answer.toLowerCase() === 's' || answer.toLowerCase() === 'y');
+        });
+      });
+
+      if (!confirm) {
+        console.log(chalk.gray('\n✓ Execução cancelada pelo usuário\n'));
+        return;
+      }
+
       // Extrair blocos de código da resposta
       const codeBlocks = this.extractAllCodeBlocks(response);
       
@@ -391,8 +440,8 @@ Caminho: [caminho/do/arquivo.ext]
    * Extrai todos os blocos de código da resposta
    * IMPORTANTE: Extrai apenas blocos que são arquivos reais, não exemplos
    */
-  private extractAllCodeBlocks(response: string): Array<{ code: string; language: string; path?: string }> {
-    const blocks: Array<{ code: string; language: string; path?: string }> = [];
+  private extractAllCodeBlocks(response: string): CodeBlock[] {
+    const blocks: CodeBlock[] = [];
     
     // Padrão para blocos de código com linguagem
     const codeBlockPattern = /```(\w+)\n([\s\S]*?)```/g;
@@ -449,7 +498,7 @@ Caminho: [caminho/do/arquivo.ext]
     return blocks;
   }
 
-  private buildCompactContext(intent: any): string {
+  private buildCompactContext(intent: IntentResult): string {
     let context = `Projeto: ${path.basename(this.currentDir)}\n`;
     context += `Tecnologias: ${this.projectContext.tech.join(', ')}\n`;
     
@@ -467,7 +516,7 @@ Caminho: [caminho/do/arquivo.ext]
     return context;
   }
 
-  private describeActions(actions: any): string {
+  private describeActions(actions: IntentResult['actions']): string {
     const tasks = [];
     if (actions.develop) tasks.push('Desenvolver/implementar código');
     if (actions.debug) tasks.push('Debugar e corrigir erros');
@@ -485,7 +534,7 @@ Caminho: [caminho/do/arquivo.ext]
     return Math.ceil(text.length / 4);
   }
 
-  private displayResult(response: string, intent: any): void {
+  private displayResult(response: string, intent: IntentResult): void {
     console.log('');
     console.log(chalk.hex('#00D9FF')('━━━ RESULTADO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
     console.log('');

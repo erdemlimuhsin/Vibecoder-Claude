@@ -23,7 +23,7 @@ export abstract class BaseCommand {
   /**
    * Execute the command
    */
-  abstract execute(...args: any[]): Promise<void>;
+  abstract execute(...args: unknown[]): Promise<void>;
 
   /**
    * Get command description

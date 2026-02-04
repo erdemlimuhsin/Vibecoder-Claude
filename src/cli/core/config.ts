@@ -107,6 +107,28 @@ export class ConfigManager {
     return this.config;
   }
 
+  /**
+   * Sanitiza API key para logs - remove informação sensível
+   */
+  private sanitizeApiKey(key: string): string {
+    if (!key || key.length < 8) return '****';
+    return '****' + key.slice(-4);
+  }
+
+  /**
+   * Sanitiza objeto de configuração para logs
+   */
+  sanitizeForLog(config: VibeCodeConfig): Partial<VibeCodeConfig> {
+    return {
+      provider: config.provider,
+      model: config.model,
+      apiKey: config.apiKey ? this.sanitizeApiKey(config.apiKey) : undefined,
+      maxTokens: config.maxTokens,
+      temperature: config.temperature,
+      excludePatterns: config.excludePatterns
+    };
+  }
+
   async save(updates: Partial<VibeCodeConfig>): Promise<void> {
     const configPath = path.join(process.cwd(), '.vibecoderc.json');
     

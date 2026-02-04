@@ -34,7 +34,7 @@ import * as path from 'path';
 import { ConfigManager } from './core/config';
 import { AIClient } from './core/ai-client';
 import { ContextBuilder } from './core/context';
-import { ProjectMemory } from '../ai/memory/ProjectMemory';
+import { ProjectMemory as ProjectMemoryImpl } from '../ai/memory/ProjectMemory';
 import ora from 'ora';
 import { SimpleProgress } from './utils/progress';
 import { ResponseFormatter } from './utils/response-formatter';
@@ -50,8 +50,37 @@ interface TerminalState {
   history: string[];
   historyIndex: number;
   currentDir: string;
-  context: any;
+  context: ProjectContext | null;
   memory: ProjectMemory;
+}
+
+interface ProjectContext {
+  fileCount: number;
+  totalSize: number;
+  files: Array<{
+    path: string;
+    size: number;
+    type: string;
+  }>;
+}
+
+interface ProjectMemory {
+  getContext(): string;
+  addDecision(description: string, rationale: string): void;
+  setStack(stack: string[]): void;
+  setArchitecture(architecture: string): void;
+  save(): void;
+  getData(): {
+    stack: string[];
+    architecture: string;
+    codeStyle: Record<string, unknown>;
+    decisions: Array<{
+      date: string;
+      description: string;
+      rationale: string;
+    }>;
+    preferences: Record<string, unknown>;
+  };
 }
 
 export class VibeCodeTerminal {
@@ -73,7 +102,7 @@ export class VibeCodeTerminal {
       historyIndex: 0,
       currentDir: process.cwd(),
       context: null,
-      memory: new ProjectMemory(process.cwd()),
+      memory: new ProjectMemoryImpl(process.cwd()),
     };
 
     // Lista MÍNIMA de comandos essenciais
@@ -164,10 +193,21 @@ export class VibeCodeTerminal {
       this.rl.prompt();
     });
 
-this.rl.on('close', () => {
-  console.log(chalk.gray('\nGoodbye!\n'));
-  process.exit(0);
-});
+    this.rl.on('close', () => {
+      console.log(chalk.gray('\nGoodbye!\n'));
+      process.exit(0);
+    });
+
+    // Handle Ctrl+C gracefully
+    process.on('SIGINT', () => {
+      console.log(chalk.gray('\n\nInterrupted. Goodbye!\n'));
+      process.exit(0);
+    });
+
+    process.on('SIGTERM', () => {
+      console.log(chalk.gray('\n\nTerminated. Goodbye!\n'));
+      process.exit(0);
+    });
   }
 
   private showWelcome(): void {

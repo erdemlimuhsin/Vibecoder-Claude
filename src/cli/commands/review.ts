@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import * as fs from 'fs';
+import * as path from 'path';
 import { AIClient } from '../core/ai-client';
 import { Logger } from '../utils/logger';
 import { handleError } from '../utils/errors';
@@ -34,12 +35,22 @@ export function createReviewCommand(aiClient: AIClient): Command {
     .argument('<file>', 'File to review')
     .action(async (file: string) => {
       try {
-        if (!fs.existsSync(file)) {
+        // Validate file path
+        const fullPath = path.resolve(process.cwd(), file);
+        if (!fs.existsSync(fullPath)) {
           Logger.error(`File not found: ${file}`);
+          Logger.info('Make sure the file path is correct and the file exists');
+          process.exit(1);
+        }
+        
+        // Check if it's actually a file
+        const stats = fs.statSync(fullPath);
+        if (!stats.isFile()) {
+          Logger.error(`Path is not a file: ${file}`);
           process.exit(1);
         }
 
-        const content = fs.readFileSync(file, 'utf-8');
+        const content = fs.readFileSync(fullPath, 'utf-8');
         const prompt = `Review this code:\n\nFile: ${file}\n\n${content}`;
 
         const spinner = ora('Reviewing code...').start();

@@ -73,8 +73,37 @@ export interface TerminalState {
   history: string[];
   historyIndex: number;
   currentDir: string;
-  context: any;
-  memory: any;
+  context: ProjectContext | null;
+  memory: ProjectMemory;
+}
+
+export interface ProjectContext {
+  fileCount: number;
+  totalSize: number;
+  files: Array<{
+    path: string;
+    size: number;
+    type: string;
+  }>;
+}
+
+export interface ProjectMemory {
+  getContext(): string;
+  addDecision(description: string, rationale: string): void;
+  setStack(stack: string[]): void;
+  setArchitecture(architecture: string): void;
+  save(): void;
+  getData(): {
+    stack: string[];
+    architecture: string;
+    codeStyle: Record<string, unknown>;
+    decisions: Array<{
+      date: string;
+      description: string;
+      rationale: string;
+    }>;
+    preferences: Record<string, unknown>;
+  };
 }
 
 export interface SessionData {

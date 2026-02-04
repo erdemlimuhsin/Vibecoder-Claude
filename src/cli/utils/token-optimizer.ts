@@ -156,6 +156,46 @@ export class TokenOptimizer {
   }
 
   /**
+   * Valida se o número de tokens está dentro do limite permitido
+   */
+  static validateTokenLimit(tokens: number, maxTokens: number): { valid: boolean; message?: string } {
+    if (tokens <= maxTokens) {
+      return { valid: true };
+    }
+    
+    const excess = tokens - maxTokens;
+    const percentOver = ((excess / maxTokens) * 100).toFixed(0);
+    
+    return {
+      valid: false,
+      message: `Token limit exceeded by ${percentOver}% (${tokens} tokens, max ${maxTokens})`
+    };
+  }
+
+  /**
+   * Verifica e avisa se está próximo do limite
+   */
+  static checkTokenWarning(tokens: number, maxTokens: number): { warning: boolean; message?: string } {
+    const percentage = (tokens / maxTokens) * 100;
+    
+    if (percentage >= 90) {
+      return {
+        warning: true,
+        message: `Warning: Using ${percentage.toFixed(0)}% of token limit (${tokens}/${maxTokens})`
+      };
+    }
+    
+    if (percentage >= 75) {
+      return {
+        warning: true,
+        message: `Notice: Using ${percentage.toFixed(0)}% of token limit (${tokens}/${maxTokens})`
+      };
+    }
+    
+    return { warning: false };
+  }
+
+  /**
    * Sugere otimizações para reduzir tokens
    */
   static suggestOptimizations(tokens: number, maxTokens: number): string[] {
