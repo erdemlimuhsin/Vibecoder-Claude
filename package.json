@@ -29,12 +29,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seu-usuario/vibecode.git"
+    "url": "https://github.com/ArthurDS-tech/Vibecoder-Claude.git"
   },
   "bugs": {
-    "url": "https://github.com/seu-usuario/vibecode/issues"
+    "url": "https://github.com/ArthurDS-tech/Vibecoder-Claude/issues"
   },
-  "homepage": "https://github.com/seu-usuario/vibecode#readme",
+  "homepage": "https://github.com/ArthurDS-tech/Vibecoder-Claude#readme",
   "scripts": {
     "setup": "node scripts/setup.js",
     "build": "npx tsc && node scripts/build.js",
