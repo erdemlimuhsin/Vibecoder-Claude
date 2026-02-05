@@ -1,9 +1,9 @@
 <br/>
 
-<<br/>
+<br/>
 
 <p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3Z5d3N1N2R2bHB1bWN4dDRmN3Q1b2ZmdHFxOGc5d3V3bG5hZzZ3ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/coxQHKASG60HrHtvkt/giphy.gif" width="700"/>
+  <img src="https://media.giphy.com/media/XGgR2GQ1kJ3NefV0Co/giphy.gif" width="700"/>
 </p>
 
 <br/><br/>
