@@ -3,7 +3,7 @@
 <br/>
 
 <p align="center">
-  <img src="https://media.giphy.com/media/XGgR2GQ1kJ3NefV0Co/giphy.gif" width="700"/>
+  <img src="https://macmagazine.com.br/wp-content/uploads/2024/08/1-claude-ai.png" width="300" />
 </p>
 
 <br/><br/>
